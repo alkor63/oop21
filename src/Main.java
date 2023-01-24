@@ -1,6 +1,7 @@
-import java.util.Random;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class Main {
     public static void main(String[] args) {
@@ -41,8 +42,34 @@ public class Main {
         consumer1.accept(name);
 
         System.out.println("\n*******  ДЗ 10 задача 3  *******");
+        Double d = iNum * 1.23;
+        Function<Double, Long> doubleToLong = new Function<Double, Long>() {
+            @Override
+            public Long apply(Double aDouble) {
+                return Math.round(aDouble);
+            }
+        };
+        System.out.println("Double число " + d + " округлили до " + doubleToLong.apply(d) + " (Long)");
+        System.out.println("--- реализация через лямбду: ---");
+        Function<Double, Long> doubleToLongF = aDouble -> Math.round(aDouble);
+        d = iNum * 3.21;
+        System.out.println("Double число " + d + " округлили до " + doubleToLong.apply(d) + " (Long)");
 
+        System.out.println("\n*******  ДЗ 10 задача 4  *******");
+        Supplier<Integer> integerSupplier = new Supplier<Integer>() {
+            @Override
+            public Integer get() {
+                java.util.Random random = new java.util.Random();
+                return random.nextInt(100);
+            }
+        };
+        System.out.println("Supplier сгенерировал число "+integerSupplier.get());
+        System.out.println("--- реализация через лямбду: ---");
+        Supplier<Integer> integerS = () -> {
+            java.util.Random random1 = new java.util.Random();
+            return random1.nextInt(100);
+        };
+        System.out.println("lambda-Supplier сгенерировал число "+integerS.get());
 
     }
-
 }
