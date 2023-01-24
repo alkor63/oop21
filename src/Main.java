@@ -63,13 +63,48 @@ public class Main {
                 return random.nextInt(100);
             }
         };
-        System.out.println("Supplier сгенерировал число "+integerSupplier.get());
+        System.out.println("Supplier сгенерировал число " + integerSupplier.get());
         System.out.println("--- реализация через лямбду: ---");
         Supplier<Integer> integerS = () -> {
             java.util.Random random1 = new java.util.Random();
             return random1.nextInt(100);
         };
-        System.out.println("lambda-Supplier сгенерировал число "+integerS.get());
+        System.out.println("lambda-Supplier сгенерировал число " + integerS.get());
 
+        System.out.println("\n*******  ДЗ 10 задача 5  *******");
+
+        Integer iNum1 = random.nextInt(100) - 50;
+        System.out.println("Random number = " + iNum1);
+        Predicate<Object> condition = p2 -> {
+            return iNum1 / 2 * 2 == iNum1;
+        };
+        Function<Object, Integer> ifTrue = sT -> 2;
+        Function<Object, Integer> ifFalse = sT -> 1;
+        Function<Object, Integer> ff = ternaryOperator(condition, ifTrue, ifFalse);
+        String s1;
+        if (ff.apply(iNum1) == 2) {
+            s1 = " четное число";
+        } else {
+            s1 = " нечетное число";
+        }
+        System.out.println(iNum1 + s1);
+    }
+
+    private static Function<Object, Integer> ternaryOperator(Predicate<Object> condition,
+                                                             Function<Object, Integer> ifTrue,
+                                                             Function<Object, Integer> ifFalse) {
+        java.util.Random random2 = new java.util.Random();
+        Integer iNum = random2.nextInt(100) - 50;
+        String sf;
+        if (condition.test(iNum)) {
+            sf = "выпало четное число" + iNum;
+            return ifTrue;
+        } else {
+            sf = "выпало нечетное число" + iNum;
+            return ifFalse;
+        }
     }
 }
+
+
+
