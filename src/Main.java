@@ -82,11 +82,8 @@ public class Main {
         Function<Object, Integer> ifFalse = sT -> 1;
         Function<Object, Integer> ff = ternaryOperator(condition, ifTrue, ifFalse);
         String s1;
-        if (ff.apply(iNum1) == 2) {
-            s1 = " четное число";
-        } else {
-            s1 = " нечетное число";
-        }
+        if (ff.apply(iNum1) == 2) { s1 = " четное число"; }
+        else { s1 = " нечетное число"; }
         System.out.println(iNum1 + s1);
     }
 
