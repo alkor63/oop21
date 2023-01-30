@@ -1,12 +1,52 @@
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args)    {
 
-        System.out.println("*******  ДЗ 10 задача 1  *******");
+        System.out.println("*******  ДЗ 11 задача 1  *******");
+        List<Integer> intList = new ArrayList<>();
+        int nums = 10; // количество чисел, которое хотим нагенерировать в массив
+        System.out.println("Генерируем массив из "+nums+" чисел:");
+        for (int i=0;i<nums;i++) {
+            java.util.Random random = new java.util.Random();
+            int j = random.nextInt(50);
+            intList.add(j); // генерируем целое число от 0 до 50, добавляем в массив
+            System.out.print(j+" ");
+        }
+        System.out.println("\nнаходим в этом массиве минимальное и максимальное значение:");
+        Stream<Integer> intStream = intList.stream();
+        findMinMax(intStream,Integer::compareTo,(min,max) -> System.out.println("минимум = "+min+" , максимум = "+max));
+// -----------------------------------------------------------
+        System.out.println("\n*******  ДЗ 11 задача 2 *******");
+        evenCounter(intList);
+    }
+public static void evenCounter(List<Integer> intList){
+    System.out.println("В нашем массиве: "+intList.stream().filter(i -> i/2*2 == i).count()+" четных чисел");
+    System.out.println("Чётные числа нашего массива: ");
+    System.out.println(intList.stream().filter(i -> i/2*2 == i).collect(Collectors.toList()));
+}
+    public static <T> void findMinMax(
+            Stream<? extends T> stream,
+            Comparator<? super T> order,
+            BiConsumer<? super T, ? super T> minMaxConsumer)
+    {
+        List<T> arrayList;
+        T min = null;
+        T max = null;
+        arrayList = stream.sorted(order).collect(Collectors.toList());
+        if (arrayList.size() > 0) {
+            min = arrayList.get(0);
+            max = arrayList.get(arrayList.size() - 1);
+        }
+minMaxConsumer.accept(min,max);
+    }
+// =================================================================================
+    /*    System.out.println("*******  ДЗ 10 задача 1  *******");
         java.util.Random random = new java.util.Random();
         int iNum = random.nextInt(100) - 50; // генерируем целое число от -50 до 50
         Predicate<Integer> p = new Predicate<Integer>() {
@@ -73,34 +113,28 @@ public class Main {
 
         System.out.println("\n*******  ДЗ 10 задача 5  *******");
 
-        Integer iNum1 = random.nextInt(100) - 50;
+        Integer iNum1 = random.nextInt(100);
         System.out.println("Random number = " + iNum1);
-        Predicate<Object> condition = p2 -> {
-            return iNum1 / 2 * 2 == iNum1;
-        };
-        Function<Object, Integer> ifTrue = sT -> 2;
-        Function<Object, Integer> ifFalse = sT -> 1;
-        Function<Object, Integer> ff = ternaryOperator(condition, ifTrue, ifFalse);
-        String s1;
-        if (ff.apply(iNum1) == 2) { s1 = " четное число"; }
-        else { s1 = " нечетное число"; }
-        System.out.println(iNum1 + s1);
-    }
+        Predicate<Integer> condition = p2 -> iNum1 / 2 * 2 == iNum1;
 
-    private static Function<Object, Integer> ternaryOperator(Predicate<Object> condition,
-                                                             Function<Object, Integer> ifTrue,
-                                                             Function<Object, Integer> ifFalse) {
-        java.util.Random random2 = new java.util.Random();
-        Integer iNum = random2.nextInt(100) - 50;
-        String sf;
-        if (condition.test(iNum)) {
-            sf = "выпало четное число" + iNum;
-            return ifTrue;
-        } else {
-            sf = "выпало нечетное число" + iNum;
-            return ifFalse;
+        Function<Integer, String> ifTrue = sT -> "четное число";
+        Function<Integer, String> ifFalse = sT -> "нечетное число";
+        Function<Integer, String> ff = ternaryOperator(condition, ifTrue, ifFalse);
+        System.out.println(iNum1 + " = " + ff.apply(iNum1));
+*/
+
+    private static <T, U> Function<T, U> ternaryOperator(
+            Predicate<? super T> condition,
+            Function<? super T, ? extends U> ifTrue,
+            Function<? super T, ? extends U> ifFalse) {
+        {
+            return t -> {
+                U result = condition.test(t) ? ifTrue.apply(t) : ifFalse.apply(t);
+                return result;
+            };
         }
     }
+
 }
 
 
